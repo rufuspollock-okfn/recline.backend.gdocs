@@ -273,10 +273,10 @@ var sampleGDocsSpreadsheetData = {
 }
 
 test("GDocs Backend", function() { 
-  var dataset = new recline.Model.Dataset({
+  var dataset = {
     url: 'https://spreadsheets.google.com/feeds/list/0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc/od6/public/values?alt=json',
     backend: 'gdocs'
-  });
+  };
 
   var stub = sinon.stub($, 'getJSON', function(options, cb) {
     var spreadsheetUrl = 'spreadsheets.google.com/feeds/worksheets/';
@@ -290,12 +290,12 @@ test("GDocs Backend", function() {
     }
   });
 
-  dataset.fetch().then(function() {
-    var docList = dataset.records;
-    deepEqual(['column-2', 'column-1'], _.pluck(dataset.fields.toJSON(), 'id'));
+  recline.Backend.GDocs.fetch(dataset).done(function(result) {
+    var docList = result.records;
+    deepEqual(['column-2', 'column-1'], _.pluck(result.fields, 'id'));
     equal(3, docList.length);
-    equal("A", docList.models[0].get('column-1'));
-    equal('javascript-test :: Sheet1', dataset.get('title'));
+    equal("A", docList[0]['column-1']);
+    equal('javascript-test :: Sheet1', result.metadata.title);
   });
   $.getJSON.restore();
 });
