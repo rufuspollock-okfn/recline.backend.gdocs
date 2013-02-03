@@ -274,8 +274,7 @@ var sampleGDocsSpreadsheetData = {
 
 test("GDocs Backend", function() { 
   var dataset = {
-    url: 'https://spreadsheets.google.com/feeds/list/0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc/od6/public/values?alt=json',
-    backend: 'gdocs'
+    url: 'https://spreadsheets.google.com/feeds/list/0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc/od6/public/values?alt=json'
   };
 
   var stub = sinon.stub($, 'getJSON', function(options, cb) {
