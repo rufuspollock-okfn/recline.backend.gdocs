@@ -35,7 +35,11 @@ You can also use GDocs parsing without depending on jQuery:
 
 ## Dependencies
 
-* Underscore
-* jQuery (optional) - required for ajax requests
-* Underscore deferred (if no jQuery)
+* underscore
+* jQuery (optional) - only if you want ajax requests
+* underscore.deferred (optional) - only needed if no jQuery
+
+One of the reasons for the different options is that it ensures you can use
+this library in the browser *and* in webworkers (where jQuery does not
+function).
 
