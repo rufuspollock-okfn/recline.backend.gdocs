@@ -7,37 +7,10 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
 
   var Deferred = _.isUndefined(this.jQuery) ? _.Deferred : jQuery.Deferred;
 
-  // ## Google spreadsheet backend
-  // 
   // Fetch data from a Google Docs spreadsheet.
   //
-  // @param config: details of the Google spreadsheet e.g.
-  //
-  // <pre>
-  // var config = {
-  //   // must have a url attribute
-  //   // Value is either GDocs spreadsheet URL
-  //   url: 'https://docs.google.com/spreadsheet/ccc?key=0Aon3JiuouxLUdGlQVDJnbjZRSU1tUUJWOUZXRG53VkE#gid=0'
-       // OR URL to API
-  //   // url: 'https://spreadsheets.google.com/feeds/list/0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc/od6/public/values?alt=json'
-  //   // OR the key 
-  //   // url: '0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc'
-  // 
-  //   // [optional] index of the worksheet (starting at 1)
-  // };
-  // </pre>
-  // 
-  // NB: we try to guess from #gid={worksheetIndex} and o/w default to 1.
-  // A problem with guessing from gid is that the API worksheet indexes
-  // follow the order of the worksheets as shown in the spreadsheet but
-  // #gid seems to follow creation order so the gid and worksheetIndex may
-  // not be the same if you have re-ordered spreadsheets
-  //
-  // @return object with attributes
-  //
-  // * fields: array of Field objects
-  // * records: array of objects for each row
-  // * metadata: various metadata
+  // For details of config options and returned values see the README in
+  // the repo at https://github.com/Recline/backend.gdocs/
   my.fetch = function(config) {
     var dfd  = new Deferred(); 
     var urls = my.getGDocsAPIUrls(config.url, config.worksheetIndex);

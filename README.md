@@ -15,6 +15,40 @@ Get data from the API:
         console.log(result);
       });
 
+### Config options
+
+You may specify info about the Google Spreadsheet in several ways
+
+    // GDocs spreadsheet URL
+    {
+      url: 'https://docs.google.com/spreadsheet/ccc?key=0Aon3JiuouxLUdGlQVDJnbjZRSU1tUUJWOUZXRG53VkE#gid=0'
+    }
+
+    // OR the key 
+    {
+      url: '0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc'
+    }
+
+    // OR URL to API
+    {
+      url: 'https://spreadsheets.google.com/feeds/list/0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc/od6/public/values?alt=json'
+    }
+
+In addition you can provide a worksheet index (starting at 1):
+
+    {
+      url: ...
+      worksheetIndex: 2
+    }
+ 
+NB: we try to guess from #gid={worksheetIndex} and o/w default to 1.  A
+problem with guessing from gid is that the API worksheet indexes follow
+the order of the worksheets as shown in the spreadsheet but #gid seems to
+follow creation order so the gid and worksheetIndex may not be the same if
+you have re-ordered spreadsheets
+
+### Results
+
 The result of fetch has a convenient structure of the following form:
 
     result = {
