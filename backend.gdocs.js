@@ -39,7 +39,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
     (function () {
       var titleDfd = new Deferred();
 
-      jQuery.getJSON(urls.spreadsheet, function (d) {
+      jQuery.getJSON(urls.spreadsheetAPI, function (d) {
           titleDfd.resolve({
               spreadsheetTitle: d.feed.title.$t
           });
@@ -49,18 +49,19 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
     }()).then(function (response) {
 
       // get the actual worksheet data
-      jQuery.getJSON(urls.worksheet, function(d) {
+      jQuery.getJSON(urls.worksheetAPI, function(d) {
         var result = my.parseData(d);
         var fields = _.map(result.fields, function(fieldId) {
           return {id: fieldId};
         });
 
-        dfd.resolve({
-          metadata: {
-              title: response.spreadsheetTitle +" :: "+ result.worksheetTitle,
+        var metadata = _.extend(urls, {
+              title: response.spreadsheetTitle +" - "+ result.worksheetTitle,
               spreadsheetTitle: response.spreadsheetTitle,
               worksheetTitle  : result.worksheetTitle
-          },
+        });
+        dfd.resolve({
+          metadata: metadata,
           records       : result.records,
           fields        : fields,
           useMemoryStore: true
@@ -130,37 +131,39 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
   };
 
   // Convenience function to get GDocs JSON API Url from standard URL
-  my.getGDocsAPIUrls = function(url) {
+  // 
+  // @param url: url to gdoc to the GDoc API (or just the key/id for the Google Doc)
+  my.getGDocsAPIUrls = function(url, worksheetIndex) {
     // https://docs.google.com/spreadsheet/ccc?key=XXXX#gid=YYY
-    var regex = /.*spreadsheet\/ccc?.*key=([^#?&+]+)[^#]*(#gid=([\d]+).*)?/;
-    var matches = url.match(regex);
-    var key;
-    var worksheet;
-    var urls;
+    var regex = /.*spreadsheet\/ccc?.*key=([^#?&+]+)[^#]*(#gid=([\d]+).*)?/,
+      matches = url.match(regex),
+      key
+        ;
     
-    if(!!matches) {
+    if (!!matches) {
         key = matches[1];
         // the gid in url is 0-based and feed url is 1-based
         worksheet = parseInt(matches[3]) + 1;
         if (isNaN(worksheet)) {
           worksheet = 1;
         }
-        urls = {
-          worksheet  : 'https://spreadsheets.google.com/feeds/list/'+ key +'/'+ worksheet +'/public/values?alt=json',
-          spreadsheet: 'https://spreadsheets.google.com/feeds/worksheets/'+ key +'/public/basic?alt=json'
-        }
     }
-    else {
+    else if (url.indexOf('spreadsheets.google.com/feeds') != -1) {
         // we assume that it's one of the feeds urls
         key = url.split('/')[5];
         // by default then, take first worksheet
         worksheet = 1;
-        urls = {
-          worksheet  : 'https://spreadsheets.google.com/feeds/list/'+ key +'/'+ worksheet +'/public/values?alt=json',
-          spreadsheet: 'https://spreadsheets.google.com/feeds/worksheets/'+ key +'/public/basic?alt=json'
-        }            
+    } else {
+      key = url;
+      worksheet = 1;
     }
+    worksheet = (worksheetIndex || worksheetIndex ===0) ? worksheetIndex : worksheet;
 
-    return urls;
+    return {
+      worksheetAPI: 'https://spreadsheets.google.com/feeds/list/'+ key +'/'+ worksheet +'/public/values?alt=json',
+      spreadsheetAPI: 'https://spreadsheets.google.com/feeds/worksheets/'+ key +'/public/basic?alt=json',
+      spreadsheetKey: key,
+      worksheetIndex: worksheet
+    };
   };
 }(this.recline.Backend.GDocs));

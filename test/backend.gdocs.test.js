@@ -294,7 +294,8 @@ test("GDocs Backend", function() {
     deepEqual(['column-2', 'column-1'], _.pluck(result.fields, 'id'));
     equal(3, docList.length);
     equal("A", docList[0]['column-1']);
-    equal('javascript-test :: Sheet1', result.metadata.title);
+    equal('javascript-test - Sheet1', result.metadata.title);
+    equal(result.metadata.spreadsheetKey, '0Aon3JiuouxLUdDQwZE1JdV94cUd6NWtuZ0IyWTBjLWc');
   });
   $.getJSON.restore();
 });
@@ -307,12 +308,18 @@ test("GDocs Backend.getUrl", function() {
   var out  = recline.Backend.GDocs.getGDocsAPIUrls(url);
   var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + worksheet + '/public/values?alt=json'
   var exp2 = 'https://spreadsheets.google.com/feeds/worksheets/' + key + '/public/basic?alt=json'
-  equal(exp1, out.worksheet);
-  equal(exp2, out.spreadsheet);
+  equal(exp1, out.worksheetAPI);
+  equal(exp2, out.spreadsheetAPI);
+  equal(key, out.spreadsheetKey);
+  equal(out.worksheetIndex, worksheet);
 
   var url  = 'https://docs.google.com/spreadsheet/ccc?key=' + key;
   var out  = recline.Backend.GDocs.getGDocsAPIUrls(url);
-  equal(out.worksheet, exp1);
+  equal(out.worksheetAPI, exp1);
+  equal(out.worksheetIndex, 1);
+
+  var out  = recline.Backend.GDocs.getGDocsAPIUrls(key);
+  equal(out.worksheetAPI, exp1);
 });
 
 })(this.jQuery);
