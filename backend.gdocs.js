@@ -13,7 +13,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
   // the repo at https://github.com/Recline/backend.gdocs/
   my.fetch = function(config) {
     var dfd  = new Deferred(); 
-    var urls = my.getGDocsAPIUrls(config.url, config.worksheetIndex);
+    var urls = my.getGDocsApiUrls(config.url, config.worksheetIndex);
 
     // TODO cover it with tests
     // get the spreadsheet title
@@ -114,7 +114,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
   // Convenience function to get GDocs JSON API Url from standard URL
   // 
   // @param url: url to gdoc to the GDoc API (or just the key/id for the Google Doc)
-  my.getGDocsAPIUrls = function(url, worksheetIndex) {
+  my.getGDocsApiUrls = function(url, worksheetIndex) {
     // https://docs.google.com/spreadsheet/ccc?key=XXXX#gid=YYY
     var regex = /.*spreadsheet\/ccc?.*key=([^#?&+]+)[^#]*(#gid=([\d]+).*)?/,
       matches = url.match(regex),

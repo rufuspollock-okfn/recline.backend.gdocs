@@ -305,7 +305,7 @@ test("GDocs Backend.getUrl", function() {
   var gid = 0;
   var worksheet = 1;
   var url  = 'https://docs.google.com/spreadsheet/ccc?key=' + key + '#gid=' + gid
-  var out  = recline.Backend.GDocs.getGDocsAPIUrls(url);
+  var out  = recline.Backend.GDocs.getGDocsApiUrls(url);
   var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + worksheet + '/public/values?alt=json'
   var exp2 = 'https://spreadsheets.google.com/feeds/worksheets/' + key + '/public/basic?alt=json'
   equal(exp1, out.worksheetAPI);
@@ -314,11 +314,11 @@ test("GDocs Backend.getUrl", function() {
   equal(out.worksheetIndex, worksheet);
 
   var url  = 'https://docs.google.com/spreadsheet/ccc?key=' + key;
-  var out  = recline.Backend.GDocs.getGDocsAPIUrls(url);
+  var out  = recline.Backend.GDocs.getGDocsApiUrls(url);
   equal(out.worksheetAPI, exp1);
   equal(out.worksheetIndex, 1);
 
-  var out  = recline.Backend.GDocs.getGDocsAPIUrls(key);
+  var out  = recline.Backend.GDocs.getGDocsApiUrls(key);
   equal(out.worksheetAPI, exp1);
 });
 
