@@ -1,6 +1,12 @@
-this.recline = this.recline || {};
-this.recline.Backend = this.recline.Backend || {};
-this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
+var recline = recline || {};
+recline.Backend = recline.Backend || {};
+recline.Backend.GDocs = recline.Backend.GDocs || {};
+
+// note module is *defined* in qunit tests :-(
+if (typeof module !== 'undefined' && module != null && typeof require !== 'undefined') {
+  var _ = require('underscore');
+  module.exports = recline;
+}
 
 (function(my) {
   my.__type__ = 'gdocs';
@@ -147,4 +153,5 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
       worksheetIndex: worksheet
     };
   };
-}(this.recline.Backend.GDocs));
+}(recline.Backend.GDocs));
+
