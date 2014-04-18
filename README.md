@@ -1,5 +1,6 @@
 A simple javascript library that wraps the Google Docs JSON API. Part of the
-[Recline][] suite of data libraries.
+[Recline][] suite of data libraries (but has *no* dependencies on core
+Recline).
 
 [Recline]: http://okfnlabs.org/recline/
 
@@ -14,6 +15,25 @@ Get data from the API:
         // structure of result is below
         console.log(result);
       });
+
+### Results
+
+The result of fetch has a convenient structure of the following form:
+
+    result = {
+      records: // array of Objects
+      fields: // array of Field Objects as per http://www.dataprotocols.org/en/latest/json-table-schema.html
+      metadata: {
+        spreadsheetTitle: ...,
+        worksheetTitle: ...,
+        title: spreadsheetTitle +" :: "+ result.worksheetTitle
+      }
+    }
+
+You can also use GDocs parsing without depending on jQuery:
+
+    // json should be the JSON you get from the Google Docs JSON API
+    var out = recline.Backend.GDocs.parseData(json);
 
 ### Config options
 
@@ -46,25 +66,6 @@ problem with guessing from gid is that the API worksheet indexes follow
 the order of the worksheets as shown in the spreadsheet but #gid seems to
 follow creation order so the gid and worksheetIndex may not be the same if
 you have re-ordered spreadsheets
-
-### Results
-
-The result of fetch has a convenient structure of the following form:
-
-    result = {
-      records: // array of Objects
-      fields: // array of Field Objects as per http://www.dataprotocols.org/en/latest/json-table-schema.html
-      metadata: {
-        spreadsheetTitle: ...,
-        worksheetTitle: ...,
-        title: spreadsheetTitle +" :: "+ result.worksheetTitle
-      }
-    }
-
-You can also use GDocs parsing without depending on jQuery:
-
-    // json should be the JSON you get from the Google Docs JSON API
-    var out = recline.Backend.GDocs.parseData(json);
 
 
 ## Dependencies
