@@ -122,10 +122,12 @@ if (typeof module !== 'undefined' && module != null && typeof require !== 'undef
   // @param url: url to gdoc to the GDoc API (or just the key/id for the Google Doc)
   my.getGDocsApiUrls = function(url, worksheetIndex) {
     // https://docs.google.com/spreadsheet/ccc?key=XXXX#gid=YYY
-    var regex = /.*spreadsheet\/ccc?.*key=([^#?&+]+)[^#]*(#gid=([\d]+).*)?/,
+    // new style is https://docs.google.com/a/okfn.org/spreadsheets/d/16DayFB.../edit#gid=910481729
+    var regex = /.*spreadsheet\/ccc\?.*key=([^#?&+]+)[^#]*(#gid=([\d]+).*)?/,
+      regex2 = /.*spreadsheets\/d\/([^\/]+)\/edit(#gid=([\d]+).*)?/
       matches = url.match(regex),
-      key
-        ;
+      matches2 = url.match(regex2)
+      ;
     
     if (!!matches) {
         key = matches[1];
@@ -134,6 +136,10 @@ if (typeof module !== 'undefined' && module != null && typeof require !== 'undef
         if (isNaN(worksheet)) {
           worksheet = 1;
         }
+    }
+    else if (!!matches2) {
+      key = matches2[1];
+      worksheet = matches2[3];
     }
     else if (url.indexOf('spreadsheets.google.com/feeds') != -1) {
         // we assume that it's one of the feeds urls
