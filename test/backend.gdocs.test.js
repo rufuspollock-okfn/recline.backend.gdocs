@@ -320,11 +320,20 @@ test("GDocs Backend.getUrl", function() {
 
   var out  = recline.Backend.GDocs.getGDocsApiUrls(key);
   equal(out.worksheetAPI, exp1);
+});
 
-
+test("GDocs Backend.getUrl new style urls", function() { 
   var gid = '910481729';
   var url = 'https://docs.google.com/a/okfn.org/spreadsheets/d/' + key + '/edit#gid=' + gid;
   var out  = recline.Backend.GDocs.getGDocsApiUrls(url);
+  var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + gid + '/public/values?alt=json'
+  equal(out.spreadsheetKey, key);
+  equal(out.worksheetAPI, exp1);
+  equal(out.worksheetIndex, gid);
+
+  var url = 'https://docs.google.com/a/okfn.org/spreadsheets/d/' + key + '/edit';
+  var out  = recline.Backend.GDocs.getGDocsApiUrls(url);
+  var gid = 0;
   var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + gid + '/public/values?alt=json'
   equal(out.spreadsheetKey, key);
   equal(out.worksheetAPI, exp1);
