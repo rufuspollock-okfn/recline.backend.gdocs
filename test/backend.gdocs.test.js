@@ -323,21 +323,22 @@ test("GDocs Backend.getUrl", function() {
 });
 
 test("GDocs Backend.getUrl new style urls", function() { 
+  var key = 'Abc_dajkdkjdafkj';
   var gid = '910481729';
   var url = 'https://docs.google.com/a/okfn.org/spreadsheets/d/' + key + '/edit#gid=' + gid;
   var out  = recline.Backend.GDocs.getGDocsApiUrls(url);
-  var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + gid + '/public/values?alt=json'
+  var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + 1 + '/public/values?alt=json'
   equal(out.spreadsheetKey, key);
   equal(out.worksheetAPI, exp1);
-  equal(out.worksheetIndex, gid);
+  equal(out.worksheetIndex, 1);
 
   var url = 'https://docs.google.com/a/okfn.org/spreadsheets/d/' + key + '/edit';
   var out  = recline.Backend.GDocs.getGDocsApiUrls(url);
   var gid = 0;
-  var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + gid + '/public/values?alt=json'
+  var exp1 = 'https://spreadsheets.google.com/feeds/list/' + key + '/' + 1 + '/public/values?alt=json'
   equal(out.spreadsheetKey, key);
   equal(out.worksheetAPI, exp1);
-  equal(out.worksheetIndex, gid);
+  equal(out.worksheetIndex, 1);
 });
 
 })(this.jQuery);

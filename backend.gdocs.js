@@ -139,9 +139,16 @@ if (typeof module !== 'undefined' && module != null && typeof require !== 'undef
     }
     else if (!!matches2) {
       key = matches2[1];
-      worksheet = parseInt(matches2[3]);
+      // force worksheet index always to be 1 since it appears API worksheet
+      // index does not follow gid (is always just index of worksheet)
+      // e.g. see this worksheet https://docs.google.com/a/okfn.org/spreadsheets/d/1S8NhNf6KsrAzdaY_epSlyc2pHXRLV-z6Ty2jL9hM5A4/edit#gid=406828788
+      // gid are large numbers but for actual access use worksheet index 1 and 2 ...
+      // https://spreadsheets.google.com/feeds/list/1S8NhNf6KsrAzdaY_epSlyc2pHXRLV-z6Ty2jL9hM5A4/2/public/values?alt=json
+      // answer here is that clients will always have to explicitly set worksheet index if they want anything other than first sheet
+      // worksheet = parseInt(matches2[3]);
+      worksheet = 1;
       if (isNaN(worksheet)) {
-        worksheet = 0;
+        worksheet = 1;
       }
     }
     else if (url.indexOf('spreadsheets.google.com/feeds') != -1) {
