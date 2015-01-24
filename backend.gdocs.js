@@ -96,7 +96,7 @@ if (typeof module !== 'undefined' && module != null && typeof require !== 'undef
 
       _.each(results.fields, function(col) {
         var _keyname = 'gsx$' + col;
-        var value = entry[_keyname].$t;
+        var value = (typeof entry[_keyname] === 'undefined' ? "": entry[_keyname].$t);
         var num;
  
         // TODO cover this part of code with test
